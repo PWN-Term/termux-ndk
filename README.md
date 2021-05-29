@@ -75,7 +75,8 @@ $ cd /system && tar -cJf /sdcard/system.tar.xz *
 $ cd /apex && tar -cJf /sdcard/apex.tar.xz *
 
 $ cd /vendor && tar -cJf /sdcard/vendor.tar.xz *
- 
+```
+
 ####  How to build
 
 Termux needs to install aarch64 version of Linux,
