@@ -69,6 +69,7 @@ $ pacman -S patch rsync
 * To exit chroot run cmd ( exit ), so script can umount bindings
 ##### Adding android env to arch
 * In arm64 phone tar these and then add these to chroot, or download premade arm64 tar's
+* https://github.com/PWN-Term/hacky-stuff/releases/tag/28.05.2021
 ```
 $ cd /system && tar -cJf /sdcard/system.tar.xz *
 
