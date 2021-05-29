@@ -9,7 +9,73 @@ of course you can build the whole NDK, use checkbuild.py, but the source code is
 For more details information, please refer to [toolchain readme docs](https://github.com/Lzhiyong/termux-ndk/tree/master/docs)
 
 ##### [download r22b](https://github.com/Lzhiyong/termux-ndk/releases)
+####  Setting up arch arm64 / android mix env to build in pc
 
+#### Installing req
+```
+$ apt install qemu-user qemu-user-static
+```
+
+#### Setting up arch rootfs
+1) download http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
+2) mkdir arch-arm64
+3) tar -xpf ArchLinuxARM-aarch64-latest.tar.gz -C arch-arm64
+
+##### Some post things
+* rm -rf arch-arm64/etc/resolv*
+* cp -rf /etc/resolv.conf arch-arm64/etc/resolv.conf
+* nano arch-arm64/etc/pacman.conf
+* And now comment out CheckSpace and uncomment Color
+```
+$ cat <<EOF > /bin/ch
+#!/bin/bash
+FS=$1
+
+echo "Mounting proc"
+mount -t proc proc $FS/proc/
+sleep 2
+echo "Mounting sysfs"
+mount -t sysfs sys $FS/sys/
+sleep 2
+echo "Binding dev"
+mount -o bind /dev $FS/dev/
+sleep 2
+echo "[+] Started chroot"
+chroot $FS/ /bin/bash
+sleep 2
+echo "UMount proc"
+umount -l $FS/proc/
+sleep 2
+echo "UMount sysfs"
+umount -l $FS/sys/
+sleep 2
+echo "Umount dev"
+umount -l $FS/dev/
+sleep 1
+
+EOF
+
+$ chmod +x /bin/ch
+
+$ ch arch-arm64
+```
+* In chroot run these
+```
+$ pacman-key --init
+$ pacman-key --populate archlinuxarm
+$ pacman -Syu
+$ pacman -S patch rsync
+```
+* To exit chroot run cmd ( exit ), so script can umount bindings
+##### Adding android env to arch
+* In arm64 phone tar these and then add these to chroot, or download premade arm64 tar's
+```
+$ cd /system && tar -cJf /sdcard/system.tar.xz *
+
+$ cd /apex && tar -cJf /sdcard/apex.tar.xz *
+
+$ cd /vendor && tar -cJf /sdcard/vendor.tar.xz *
+ 
 ####  How to build
 
 Termux needs to install aarch64 version of Linux,
