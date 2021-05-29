@@ -84,6 +84,7 @@ cd llvm-toolchain/prebuilts/go/linux-x86/src
 ```bash
 # no build for windows
 # If it is not the first time to build, you can add options --skip-source-setup to save time
+# cd back to llvm-toolchain
 python toolchain/llvm_android/build.py --enable-assertions --no-build windows
 ```
 
